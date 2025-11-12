@@ -4,7 +4,8 @@
   "deps": {
     "oboard/mocket": "0.5.7",
     "oboard/morm": "0.1.6",
-    "myfreess/sqlite3": "0.1.0"
+    "myfreess/sqlite3": "0.1.0",
+    "moonbitlang/x": "0.4.36"
   },
   "bin-deps": {
     "oboard/morm": "0.1.6"

@@ -11,7 +11,7 @@
 
 - 持久化：SQLite（数据库文件 `chat.db`）
 - ORM：MORM（基于注解生成表结构、Mapper 实现）
-- HTTP：Mocket（HTTP server）
+- HTTP：Mocket（极简 HTTP server）
 - 运行时流程：
   1. 打开数据库连接并自动迁移表结构
   2. 通过 MORM 生成的 Mapper 访问数据
@@ -55,7 +55,7 @@
   - `#morm.entity`：声明实体类型
   - `pub(all) struct Message`：对外公开结构体
   - 字段：
-    - `id : String` + `#morm.primary_key` + `#morm.uuid`（字符串主键）
+    - `id : String` + `#morm.primary_key` + `#morm.uuid`（字符串主键，自动生成 UUID）
     - `content : String` + `#morm.varchar(length="255")`
     - `created_at : String` + `#morm.datetime`
   - `derive(ToJson, FromJson)`：自动派生 JSON 序列化/反序列化
@@ -107,5 +107,5 @@
 
 ## 注意事项
 
-- 预构建生成依赖 `morm-gen` 可执行工具；请确保 `moon.mod.json` 配置 `bin-deps`，`moon.pkg.json` 的 `pre-build` 命令可在你的环境中正确执行。
+- 预构建生成依赖 `morm-gen` 可执行工具；请确保 `moon.pkg.json` 的 `pre-build` 命令可在你的环境中正确执行。
 - SQLite 文件 `chat.db` 位于项目根目录；首次运行会自动创建并迁移。

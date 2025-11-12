@@ -5,7 +5,8 @@
     "oboard/morm",
     "oboard/morm/engine",
     "oboard/morm/dialect",
-    "oboard/mocket"
+    "oboard/mocket",
+    "moonbitlang/x/fs"
   ],
   "pre-build": [
     {

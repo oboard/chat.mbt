@@ -9,6 +9,10 @@ fn main {
 
   // 创建应用
   let app = @mocket.new()
+  let index_html = @fs.read_file_to_string("index.html") catch {
+    _ => "Error loading index.html"
+  }
+  app.get("/", _ => HTML(index_html))
   // 获取所有消息
   app.get("/messages", _ => {
     let messages = message_mapper.find_all()
