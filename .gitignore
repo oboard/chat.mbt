@@ -3,4 +3,4 @@ target/
 .mooncakes/
 .moonagent/
 
-*.db
+chat.db
