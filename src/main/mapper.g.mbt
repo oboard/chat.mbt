@@ -12,10 +12,10 @@ pub fn Message::mapper(engine : &@engine.Engine) -> MessageMapper_ {
 pub impl MessageMapper for MessageMapper_ with find_all(self) -> FixedArray[
   Message,
 ] {
-  self.engine.exec("SELECT * FROM Message", []).rows.map(row => @json.from_json(
-    row,
-  ) catch {
-    _ => panic()
+  self.engine.exec("SELECT * FROM Message", []).rows.map(row => {
+    @json.from_json(row) catch {
+      _ => panic()
+    }
   })
 }
 
@@ -33,7 +33,7 @@ pub fn MessageMapper_::save(
   }
   // Fallback: read back by conflict keys when UPSERT does not return rows
   let tbl = Message::table()
-  let obj = entity.to_json().as_object().unwrap()
+  let obj = if entity.to_json() is Object(obj) { obj } else { {} }
   // try primary key first
   match tbl.primary_key() {
     Some(pk) =>

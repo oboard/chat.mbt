@@ -30,13 +30,15 @@ impl @engine.Engine for SQLiteEngine with exec(
   println(params.to_json().stringify())
   try {
     let stmt = self.conn.prepare(sql + ";")
-    params.eachi((index, val) => match val {
-      Number(val, ..) => stmt.bind(index~, val~)
-      String(val) => stmt.bind(index~, val~)
-      True => stmt.bind(index~, val=1)
-      False => stmt.bind(index~, val=0)
-      Null => stmt.bind_null(index~)
-      _ => abort("unexpected value")
+    params.eachi((index, val) => {
+      match val {
+        Number(val, ..) => stmt.bind(index~, val~)
+        String(val) => stmt.bind(index~, val~)
+        True => stmt.bind(index~, val=1)
+        False => stmt.bind(index~, val=0)
+        Null => stmt.bind_null(index~)
+        _ => abort("unexpected value")
+      }
     })
     // 构造第一行的 Json（按列名 -> 值）
 

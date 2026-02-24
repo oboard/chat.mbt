@@ -160,7 +160,6 @@ pub fn Statement::step_once(
   loc~ : SourceLoc,
 ) -> Unit raise SqliteError {
   let _ = self.step(loc~)
-
 }
 
 ///|

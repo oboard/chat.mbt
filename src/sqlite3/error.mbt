@@ -1,5 +1,7 @@
 ///|
-pub suberror SqliteError (Int, SourceLoc) derive(Show)
+pub suberror SqliteError {
+  SqliteError((Int, SourceLoc))
+} derive(Show)
 
 ///|
 extern "c" fn sqlite3_errmsg(conn : Connection) -> Bytes = "moonbit_sqlite3_errmsg"

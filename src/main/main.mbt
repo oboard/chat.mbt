@@ -19,13 +19,15 @@ fn main {
     Json(messages.to_json())
   })
   // 发送消息
-  app.post("/send", e => if e.req.body is Json(json) {
-    let message = try! @json.from_json(json)
-    let message = message_mapper.save(message)
-    Json(message.to_json())
-  } else {
-    e.res.status_code = 400
-    Text("Invalid JSON body")
+  app.post("/send", e => {
+    if e.req.body is Json(json) {
+      let message = try! @json.from_json(json)
+      let message = message_mapper.save(message)
+      Json(message.to_json())
+    } else {
+      e.res.status_code = 400
+      Text("Invalid JSON body")
+    }
   })
   for route in app.mappings.keys() {
     println(route)
