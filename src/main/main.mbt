@@ -1,36 +1,33 @@
 ///|
-fn main {
+async fn main {
   // 打开数据库连接
-  let engine = SQLiteEngine::open("chat.db")
+  let engine = @sqlite3.SQLiteEngine::open("chat.db")
   defer engine.close()
   // 自动迁移数据库
   @morm.auto_migrate(engine, [Message::table()])
-  let message_mapper = Message::mapper(engine)
+  let message_mapper = MessageMapperImpl::new(engine)
 
   // 创建应用
   let app = @mocket.new()
-  let index_html = @fs.read_file_to_string("index.html") catch {
+  let index_html = @fs.read_file("index.html").text() catch {
     _ => "Error loading index.html"
   }
-  app.get("/", _ => HTML(index_html))
+  app.get("/", _ => @mocket.html(index_html))
   // 获取所有消息
   app.get("/messages", _ => {
-    let messages = message_mapper.find_all()
-    Json(messages.to_json())
+    message_mapper.find_all().to_json() catch {
+      _ => return @mocket.HttpResponse::new(InternalServerError)
+    }
   })
   // 发送消息
   app.post("/send", e => {
-    if e.req.body is Json(json) {
-      let message = try! @json.from_json(json)
-      let message = message_mapper.save(message)
-      Json(message.to_json())
-    } else {
-      e.res.status_code = 400
-      Text("Invalid JSON body")
+    try {
+      let message : Message = e.req.body()
+      message_mapper.save(message).to_json()
+    } catch {
+      _ => return @mocket.HttpResponse::new(InternalServerError)
     }
   })
-  for route in app.mappings.keys() {
-    println(route)
-  }
+  println("http://localhost:3000")
   app.serve(port=3000)
 }

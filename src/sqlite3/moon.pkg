@@ -1,8 +1,0 @@
-import {
-}
-
-options(
-  link: { "native": { "cc-flags": "-c" } },
-  "native-stub": [ "mbt_sqlite3.c", "sqlite3.c" ],
-  "supported-targets": [ "native" ],
-)
